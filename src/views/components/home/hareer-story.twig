@@ -1,0 +1,27 @@
+{#
+| Variable                 | Type     | Description                   |
+|--------------------------|----------|-------------------------------|
+| component.image          | ?string  |                               |
+| component.eyebrow        | ?string  |                               |
+| component.title          | string   |                               |
+| component.text           | ?string  |                               |
+| component.signature      | ?string  | e.g. founder name             |
+| component.button_text    | ?string  |                               |
+| component.button_url     | ?string  |                               |
+| component.image_end      | bool     | Put the image on the end side |
+#}
+{% set img = component.image ?: ('images/hareer/story.jpg'|asset) %}
+<section component-id="{{ componentId }}" data-testid="hareer-story" class="s-block hr-story {{ component.image_end ? 'hr-story--reverse' : '' }}">
+    <div class="container hr-story__inner">
+        <div class="hr-story__media"><img src="{{ img }}" alt="{{ component.title|e('html_attr') }}" loading="lazy" width="1200" height="1400"></div>
+        <div class="hr-story__copy">
+            {% if component.eyebrow %}<p class="hr-eyebrow">{{ component.eyebrow }}</p>{% endif %}
+            <h2 class="hr-section-title">{{ component.title }}</h2>
+            {% if component.text %}<div class="hr-story__text">{{ component.text|nl2br }}</div>{% endif %}
+            {% if component.signature %}<p class="hr-story__sign">— {{ component.signature }}</p>{% endif %}
+            {% if component.button_text and component.button_url %}
+                <a href="{{ component.button_url }}" class="hr-btn hr-btn--ink">{{ component.button_text }}</a>
+            {% endif %}
+        </div>
+    </div>
+</section>

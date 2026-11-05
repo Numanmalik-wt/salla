@@ -1,0 +1,45 @@
+{#
+| Variable                 | Type        | Description                                   |
+|--------------------------|-------------|-----------------------------------------------|
+| component.title          | ?string     |                                               |
+| component.subtitle       | ?string     |                                               |
+| component.categories     | Category[]  | Each category becomes a tab                   |
+| component.limit_eight    | bool        | Show 8 products per tab instead of 4          |
+| component.show_all       | bool        | Show "view all" link to the active category   |
+#}
+{% set cats = component.categories|default([]) %}
+{% set limit = component.limit_eight ? 8 : 4 %}
+<section component-id="{{ componentId }}" id="hr-tabs-{{ position }}" data-testid="hareer-tabbed-products" class="s-block hr-tabs">
+    <div class="container">
+        <header class="hr-section-head">
+            {% if component.subtitle %}<p class="hr-eyebrow">{{ component.subtitle }}</p>{% endif %}
+            {% if component.title %}<h2 class="hr-section-title">{{ component.title }}</h2>{% endif %}
+            {% if cats|length > 1 %}
+                <div class="hr-tabs__list" role="tablist">
+                    {% for cat in cats %}
+                        <button type="button" role="tab" class="hr-tabs__tab {{ loop.first ? 'is-active' : '' }}"
+                                id="hr-tab-{{ position }}-{{ loop.index0 }}"
+                                aria-controls="hr-panel-{{ position }}-{{ loop.index0 }}"
+                                aria-selected="{{ loop.first ? 'true' : 'false' }}">{{ cat.name }}</button>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </header>
+
+        {% if cats|length %}
+            {% for cat in cats %}
+                <div class="hr-tabs__panel {{ loop.first ? 'is-active' : '' }}" role="tabpanel"
+                     id="hr-panel-{{ position }}-{{ loop.index0 }}" aria-labelledby="hr-tab-{{ position }}-{{ loop.index0 }}"
+                     {{ loop.first ? '' : 'hidden' }}>
+                    <salla-products-list source="categories" source-value="[{{ cat.id }}]" limit="{{ limit }}"
+                                         class="hr-products-grid"></salla-products-list>
+                    {% if component.show_all and cat.url %}
+                        <div class="hr-tabs__more"><a class="hr-btn hr-btn--outline" href="{{ cat.url }}">{{ trans('blocks.hareer.view_all') }} {{ cat.name }}</a></div>
+                    {% endif %}
+                </div>
+            {% endfor %}
+        {% else %}
+            <salla-products-list source="latest" limit="{{ limit }}" class="hr-products-grid"></salla-products-list>
+        {% endif %}
+    </div>
+</section>

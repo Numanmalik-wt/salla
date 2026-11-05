@@ -1,0 +1,29 @@
+{#
+| Variable                 | Type     | Description                      |
+|--------------------------|----------|----------------------------------|
+| component.items          | object[] | Short messages                   |
+| component.items[].icon   | ?string  | Salla icon class                 |
+| component.items[].text   | string   |                                  |
+| component.dark           | bool     | Dark strip                       |
+#}
+{% set items = component.items|default([]) %}
+{% if items|length %}
+<section component-id="{{ componentId }}" data-testid="hareer-marquee"
+         class="s-block hr-marquee {{ component.dark ? 'hr-marquee--dark' : '' }}" aria-label="{{ trans('blocks.hareer.announcements') }}">
+    <div class="hr-marquee__track">
+        {% for pass in 1..2 %}
+            <ul class="hr-marquee__group" {{ pass == 2 ? 'aria-hidden="true"' : '' }}>
+                {% for item in items %}
+                    {% for rep in 1..2 %}
+                    <li class="hr-marquee__item">
+                        {% if item.icon %}<i class="{{ item.icon }}" aria-hidden="true"></i>{% endif %}
+                        <span>{{ item.text }}</span>
+                        <span class="hr-marquee__sep" aria-hidden="true">✦</span>
+                    </li>
+                    {% endfor %}
+                {% endfor %}
+            </ul>
+        {% endfor %}
+    </div>
+</section>
+{% endif %}

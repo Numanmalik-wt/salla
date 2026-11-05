@@ -1,0 +1,113 @@
+/* Product card: portrait image, quiet typography, hover second photo */
+.theme-hareer {
+  .s-product-card-entry {
+    background: transparent;
+    border-radius: var(--hr-radius);
+    box-shadow: none;
+  }
+
+  .s-product-card-vertical {
+    .s-product-card-image {
+      position: relative;
+      flex: none;
+      aspect-ratio: var(--hr-card-ratio);
+      height: auto;
+      overflow: hidden;
+      background: var(--hr-sand);
+      border-radius: var(--hr-radius);
+
+      > a { display: block; width: 100%; height: 100%; }
+      img { width: 100%; height: 100%; transition: transform 1.1s var(--hr-ease), opacity var(--hr-dur) var(--hr-ease); }
+    }
+    &:hover .s-product-card-image img:not(.hr-card-hover-image) { transform: scale(1.04); }
+
+    .s-product-card-content { padding: .9rem 0 0; background: transparent; }
+    .s-product-card-content-title { font-size: .95rem; font-weight: 500; line-height: 1.5; a { color: var(--hr-ink); } }
+    .s-product-card-content-subtitle { font-size: .8rem; color: var(--hr-stone); }
+    .s-product-card-price,
+    .s-product-card-sale-price h4,
+    .s-product-card-starting-price h4 { font-size: .95rem; font-weight: 600; color: var(--hr-ink); }
+    .s-product-card-sale-price h4 { color: var(--hr-sale); }
+    .s-product-card-sale-price span { color: var(--hr-stone); }
+
+    .s-product-card-wishlist-btn {
+      top: .65rem;
+      opacity: 1;
+      button { width: 36px; height: 36px; border-radius: 999px; background: rgba(255, 255, 255, .92) !important; border: 0; }
+    }
+
+    .s-product-card-promotion-title,
+    .s-product-card-quantity,
+    .s-product-card-out-badge {
+      position: absolute;
+      top: .75rem;
+      inset-inline-start: .75rem;
+      inset-inline-end: auto;
+      border-radius: 0;
+      font-size: .7rem;
+      font-weight: 600;
+      letter-spacing: .06em;
+      padding: .3rem .6rem;
+      background: var(--hr-ink);
+      color: var(--hr-white);
+      width: auto;
+      height: auto;
+      max-width: calc(100% - 4.5rem);
+      line-height: 1.5;
+    }
+
+    // Add-to-cart: full-width outline button, slides up over the photo on desktop
+    .s-product-card-content-footer { margin-top: .75rem; }
+    .s-button-outline { border-color: var(--hr-ink); color: var(--hr-ink); border-radius: var(--hr-radius); }
+    .s-button-outline:hover { background: var(--hr-ink); color: var(--hr-white); }
+  }
+
+  // Desktop: the add-to-cart button sits over the bottom of the photo and appears on hover.
+  // display: contents lets the button become a sibling of the image without changing markup.
+  @media (hover: hover) and (min-width: 1024px) {
+    .s-product-card-vertical:not(.s-product-card-donation) {
+      .s-product-card-content { display: contents; }
+      .s-product-card-image { order: 1; }
+      .s-product-card-content-footer {
+        order: 2;
+        position: relative;
+        z-index: 2;
+        margin: -3.75rem .75rem .75rem;
+        opacity: 0;
+        transform: translateY(10px);
+        transition: opacity var(--hr-dur) var(--hr-ease), transform var(--hr-dur) var(--hr-ease);
+        .s-button-outline { background: rgba(255, 255, 255, .95); border-color: transparent; }
+        .s-button-outline:hover { background: var(--hr-ink); color: var(--hr-white); }
+      }
+      .s-product-card-content-main { order: 3; padding-top: .15rem; }
+      .s-product-card-content-sub { order: 4; }
+      salla-free-shipping-tag, salla-count-down { order: 5; }
+      &:hover .s-product-card-content-footer,
+      &:focus-within .s-product-card-content-footer { opacity: 1; transform: none; }
+    }
+  }
+}
+
+/* Second photo on hover */
+.hr-card-hover-image { display: none; }
+@media (hover: hover) {
+  .hr-card-hover .hr-has-hover-image {
+    .hr-card-hover-image {
+      display: block;
+      position: absolute;
+      inset: 0;
+      object-fit: cover;
+      opacity: 0;
+    }
+    &:hover .hr-card-hover-image { opacity: 1; }
+  }
+}
+
+/* Product grids used by Hareer sections */
+.hr-products-grid .s-products-list-wrapper,
+.hr-products-grid .s-products-list-vertical-cards {
+  gap: var(--hr-gap);
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  @screen md { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+  @screen lg { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+}

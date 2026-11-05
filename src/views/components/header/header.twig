@@ -1,0 +1,102 @@
+{#
+| Variable         | Type    | Description                     |
+|------------------|---------|---------------------------------|
+| cart             | object  |                                 |
+| cart.items_count | int     |                                 |
+| cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
+#}
+{% set important_links = theme.settings.get('important_links') %}
+{% set announcement = theme.settings.get('hareer_announcement_text') %}
+{% set announcement_url = theme.settings.get('hareer_announcement_url') %}
+{% set show_topbar = theme.settings.get('hareer_show_topbar', true) %}
+<header data-testid="store-header" class="store-header hr-header">
+
+  {# Announcement bar #}
+  {% if announcement %}
+    <div class="hr-announcement" data-hr-announcement>
+      <div class="container hr-announcement__inner">
+        {% if announcement_url %}
+          <a href="{{ announcement_url }}" class="hr-announcement__text">{{ announcement }}</a>
+        {% else %}
+          <p class="hr-announcement__text">{{ announcement }}</p>
+        {% endif %}
+        <button type="button" class="hr-announcement__close sicon-cancel" aria-label="{{ trans('blocks.hareer.close') }}" data-hr-announcement-close></button>
+      </div>
+    </div>
+  {% endif %}
+
+  <div class="lg:hidden">
+    <salla-bullet-delivery-tag></salla-bullet-delivery-tag>
+  </div>
+
+  {# Utility bar: pages, language, branches, contacts #}
+  {% if show_topbar %}
+  <div class="top-navbar hr-topbar">
+    <div class="container flex justify-between items-center gap-3">
+      <div class="flex-1 flex items-center gap-2 min-w-0">
+          {% if important_links %}
+            <salla-menu data-testid="store-header-topnav" source="footer" topnav></salla-menu>
+          {% endif %}
+          <div class="header-buttons">
+              {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+                  <salla-localization-modal data-testid="store-header-localization" show-trigger></salla-localization-modal>
+              {% endif %}
+          </div>
+          <div class="hidden lg:block">
+            <salla-bullet-delivery-tag></salla-bullet-delivery-tag>
+          </div>
+          {% if store.scope %}
+              <button class="btn--rounded-gray" onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})">
+                  <i class="sicon-location rtl:ml-1 ltr:mr-1"></i> {{ store.scope.name }}
+              </button>
+          {% endif %}
+      </div>
+      <salla-contacts data-testid="store-header-contacts" is-header class="hidden md:block"></salla-contacts>
+    </div>
+  </div>
+  {% endif %}
+
+  {# Main bar: centered logo, actions on the sides #}
+  <div id="mainnav" class="main-nav-container hr-mainnav">
+      <div class="inner w-full">
+          <div class="container">
+              <div class="hr-nav">
+                  <div class="hr-nav__start">
+                      <a data-testid="store-header-mobile-toggle" class="lg:hidden mburger mburger--collapse hr-icon-btn" href="#mobile-menu" aria-label="Open-menu">
+                        <i class="sicon-menu"></i>
+                      </a>
+                      <button type="button" class="hr-icon-btn" aria-label="{{ trans('blocks.hareer.search') }}"
+                              onclick="salla.event.dispatch('search::open')">
+                        <i class="sicon-search"></i>
+                        <span class="hr-icon-btn__label">{{ trans('blocks.hareer.search') }}</span>
+                      </button>
+                  </div>
+
+                  <a data-testid="store-header-logo" class="navbar-brand hr-logo" href="{{ store.url }}">
+                      <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo|cdn(240) }}" alt="{{ store.name }} logo">
+                      {% if is_page('index') %}
+                        <h1 class="sr-only">{{ store.name }}</h1>
+                      {% else %}
+                        <h2 class="sr-only">{{ store.name }}</h2>
+                      {% endif %}
+                  </a>
+
+                  <div class="hr-nav__end">
+                      <salla-user-menu data-testid="store-header-user-menu" avatar-only show-header show-trigger></salla-user-menu>
+                      <a href="{{ link('wishlist') }}" class="hr-icon-btn hidden sm:inline-flex" aria-label="{{ trans('blocks.hareer.wishlist') }}">
+                        <i class="sicon-heart"></i>
+                      </a>
+                      <salla-cart-summary data-testid="store-header-cart">
+                        <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
+                      </salla-cart-summary>
+                  </div>
+              </div>
+          </div>
+          <div class="container hr-nav__menu-row">
+              <div class="flex justify-center">
+                  <custom-main-menu></custom-main-menu>
+              </div>
+          </div>
+      </div>
+  </div>
+</header>

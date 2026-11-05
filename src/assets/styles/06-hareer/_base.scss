@@ -1,0 +1,106 @@
+/* Base: page canvas, typography, shared atoms */
+body.theme-hareer {
+  background: var(--hr-paper);
+  color: var(--hr-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+.theme-hareer {
+  h1, h2, h3,
+  .hr-section-title,
+  .s-block__title h2,
+  .s-slider-block__title h2,
+  [data-testid="store-product-title"] {
+    font-family: var(--font-heading);
+    letter-spacing: 0;
+  }
+
+  .s-block { margin-top: var(--hr-section); }
+  main > .s-block:first-child { margin-top: 0; }
+
+  // Built-in Salla section titles get the same treatment as Hareer titles
+  .s-block__title,
+  .s-slider-block__title {
+    h2 { font-size: clamp(1.4rem, 2.6vw, 2rem); font-weight: 600; color: var(--hr-ink); }
+  }
+
+  ::selection { background: var(--hr-sand-deep); color: var(--hr-ink); }
+
+  :focus-visible { outline: 2px solid var(--hr-ink); outline-offset: 3px; }
+}
+
+/* Section heading */
+.hr-section-head {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: .5rem;
+  margin-bottom: clamp(1.5rem, 3.5vw, 2.75rem);
+}
+.hr-eyebrow {
+  font-size: .75rem;
+  font-weight: 600;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--hr-stone);
+  [dir="rtl"] & { letter-spacing: 0; font-size: .85rem; }
+}
+.hr-section-title {
+  font-size: clamp(1.6rem, 3.2vw, 2.5rem);
+  line-height: 1.25;
+  font-weight: 600;
+  color: var(--hr-ink);
+  text-wrap: balance;
+  a { color: inherit; }
+}
+
+/* Buttons */
+.hr-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: .6rem;
+  min-height: 48px;
+  padding: 0 1.75rem;
+  border: 1px solid currentColor;
+  border-radius: var(--hr-radius);
+  font-weight: 600;
+  font-size: .9rem;
+  letter-spacing: .04em;
+  transition: background-color var(--hr-dur) var(--hr-ease), color var(--hr-dur) var(--hr-ease), border-color var(--hr-dur) var(--hr-ease);
+  i { font-size: 1rem; transition: transform var(--hr-dur) var(--hr-ease); }
+  &:hover i { transform: translateX(-4px); }
+  [dir="ltr"] &:hover i { transform: translateX(4px) rotate(180deg); }
+
+  &--ink { background: var(--hr-ink); border-color: var(--hr-ink); color: var(--hr-white);
+    &:hover { background: transparent; color: var(--hr-ink); } }
+  &--light { background: var(--hr-white); border-color: var(--hr-white); color: var(--hr-ink);
+    &:hover { background: transparent; color: var(--hr-white); } }
+  &--outline { background: transparent; color: var(--hr-ink); border-color: var(--hr-ink);
+    &:hover { background: var(--hr-ink); color: var(--hr-white); } }
+}
+
+.hr-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .4rem;
+  font-size: .85rem;
+  font-weight: 600;
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+}
+
+/* Salla buttons follow the theme corners */
+.theme-hareer {
+  .s-button-btn { border-radius: var(--hr-radius); }
+  .s-button-primary,
+  salla-add-product-button .s-button-solid { letter-spacing: .03em; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .theme-hareer *, .theme-hareer *::before, .theme-hareer *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+  }
+}

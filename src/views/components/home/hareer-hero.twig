@@ -1,0 +1,70 @@
+{#
+| Variable                         | Type     | Description                                  |
+|----------------------------------|----------|----------------------------------------------|
+| component.slides                 | object[] | Hero slides                                  |
+| component.slides[].image         | string   | Desktop image                                |
+| component.slides[].mobile_image  | ?string  | Portrait image for phones                    |
+| component.slides[].eyebrow       | ?string  | Small label above the title                  |
+| component.slides[].title         | ?string  |                                              |
+| component.slides[].subtitle      | ?string  |                                              |
+| component.slides[].button_text   | ?string  |                                              |
+| component.slides[].button_url    | ?string  |                                              |
+| component.slides[].dark_text     | bool     | Use dark text (for light images)             |
+| component.full_height            | bool     | Fill the screen height                       |
+| component.centered               | bool     | Center the text instead of aligning to start |
+| component.autoplay               | bool     |                                              |
+#}
+{% set slides = component.slides|default([]) %}
+{% set fallbacks = ['images/hareer/hero-1.jpg', 'images/hareer/hero-2.jpg'] %}
+{% set mobile_fallbacks = ['images/hareer/hero-1-mobile.jpg', 'images/hareer/hero-2-mobile.jpg'] %}
+<section component-id="{{ componentId }}" data-testid="hareer-hero"
+         class="s-block hr-hero {{ component.full_height ? 'hr-hero--full' : '' }} {{ component.centered ? 'hr-hero--center' : '' }}"
+         data-autoplay="{{ component.autoplay ? 'true' : 'false' }}"
+         aria-roledescription="carousel">
+    <div class="hr-hero__track">
+        {% for slide in slides %}
+            {% set img = slide.image ?: (fallbacks[loop.index0 % 2]|asset) %}
+            <article class="hr-hero__slide {{ loop.first ? 'is-active' : '' }} {{ slide.dark_text ? 'hr-hero__slide--dark' : '' }}"
+                     aria-roledescription="slide" aria-label="{{ loop.index }} / {{ slides|length }}" {{ loop.first ? '' : 'aria-hidden="true"' }}>
+                <picture class="hr-hero__media">
+                    {% if slide.mobile_image %}
+                        <source media="(max-width: 767px)" srcset="{{ slide.mobile_image }}">
+                    {% elseif not slide.image %}
+                        <source media="(max-width: 767px)" srcset="{{ mobile_fallbacks[loop.index0 % 2]|asset }}">
+                    {% endif %}
+                    <img src="{{ img }}" alt="{{ slide.title|default(store.name)|e('html_attr') }}"
+                         width="1800" height="1000"
+                         {{ loop.first ? 'fetchpriority="high" loading="eager"' : 'loading="lazy"' }}>
+                </picture>
+                <div class="container hr-hero__content">
+                    <div class="hr-hero__copy">
+                        {% if slide.eyebrow %}<p class="hr-eyebrow">{{ slide.eyebrow }}</p>{% endif %}
+                        {% if slide.title %}
+                            {% if loop.first %}<h2 class="hr-hero__title">{{ slide.title }}</h2>
+                            {% else %}<h3 class="hr-hero__title">{{ slide.title }}</h3>{% endif %}
+                        {% endif %}
+                        {% if slide.subtitle %}<p class="hr-hero__subtitle">{{ slide.subtitle }}</p>{% endif %}
+                        {% if slide.button_text and slide.button_url %}
+                            <a href="{{ slide.button_url }}" class="hr-btn {{ slide.dark_text ? 'hr-btn--ink' : 'hr-btn--light' }}">
+                                {{ slide.button_text }}
+                                <i class="sicon-arrow-left ltr:rotate-180" aria-hidden="true"></i>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </article>
+        {% endfor %}
+    </div>
+
+    {% if slides|length > 1 %}
+        <div class="hr-hero__nav container" role="tablist">
+            {% for slide in slides %}
+                <button type="button" class="hr-hero__dot {{ loop.first ? 'is-active' : '' }}" data-index="{{ loop.index0 }}"
+                        role="tab" aria-label="{{ trans('blocks.hareer.go_to_slide') }} {{ loop.index }}"
+                        aria-selected="{{ loop.first ? 'true' : 'false' }}">
+                    <span class="hr-hero__dot-bar"></span>
+                </button>
+            {% endfor %}
+        </div>
+    {% endif %}
+</section>

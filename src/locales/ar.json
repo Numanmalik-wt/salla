@@ -1,0 +1,62 @@
+{
+  "blocks": {
+    "header": {
+      "cart": "السلة"
+    },
+    "appBanner": {
+      "download_now": "حمله الان"
+    },
+    "hareer": {
+      "go_to_slide": "الانتقال إلى الشريحة",
+      "announcements": "إعلانات المتجر",
+      "shop_now": "تسوقي الآن",
+      "view_all": "عرض كل",
+      "shop_the_look": "تسوقي الإطلالة",
+      "days": "يوم",
+      "hours": "ساعة",
+      "minutes": "دقيقة",
+      "seconds": "ثانية",
+      "close": "إغلاق",
+      "search": "بحث",
+      "wishlist": "المفضلة",
+      "size_guide": "دليل الأطوال",
+      "custom_tailoring": "اطلبي تفصيلاً خاصاً",
+      "tailoring_message": "مرحباً، أرغب بتفصيل هذا المنتج على مقاسي:",
+      "size_guide_intro": "اختاري طول العباية حسب طولكِ. يُقاس طول العباية من أعلى الكتف حتى نهاية العباية بالإنش.",
+      "abaya_length": "طول العباية (إنش)",
+      "your_height": "طولكِ",
+      "cm": "سم",
+      "size_guide_tip": "نصيحة: إذا كنتِ بين مقاسين وتلبسين كعباً عالياً، اختاري الطول الأكبر.",
+      "delivery": "التوصيل",
+      "returns": "الاستبدال والاسترجاع"
+    }
+  },
+  "pages": {
+    "cart": {
+      "cart_options": "خيارات السلة"
+    },
+    "products": {
+      "barcode": "الباركود"
+    },
+    "order": {
+      "can_edit_or_delete_your_review_within": "يمكنك تعديل أو حذف تقييمك خلال",
+      "edit_period_ended": "تم انتهاء المدة المحددة لتعديل التقييم",
+      "delete_period_ended": "تم انتهاء المدة المحددة لحذف التقييم",
+      "days_since_added": "أيام من إضافته",
+      "option_name": "الخيار",
+      "option_content": "المحتوى"
+    },
+    "thank_you": {
+      "view_invoice": "عرض الفاتورة",
+      "contact_us": "في بالك سؤال أو استفسار؟ نسعد بتواصلك معنا",
+      "cashback": "الاسترداد النقدي",
+      "loyalty_points": "نقاط الولاء",
+      "gifts_title": "هدايا لا تفوت 🎉",
+      "order_received": "شكرا لتسوقكم عبر متجرنا وجاري العمل على طلبكم"
+    }
+  },
+  "common": {
+    "bank_offer_sub_title_multiple": "ادفع قيمة مشترياتك عبر أحد البطاقات البنكة التالية واحصل على الخصم المحدد",
+    "bank_offer_sub_title_single": "ادفع قيمة مشترياتك عبر أحد بطاقات بنك :bank_name واحصل على خصم بنسبة "
+  }
+}

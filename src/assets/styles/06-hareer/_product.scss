@@ -1,0 +1,72 @@
+/* Product page refinements */
+.theme-hareer {
+  [data-testid="store-product-title"] {
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    font-weight: 600;
+    line-height: 1.35;
+    color: var(--hr-ink);
+    margin-bottom: 1rem;
+  }
+
+  .product-form section.bg-white,
+  .product-form .sticky-product-bar,
+  .s-product-options-wrapper { background: transparent; }
+
+  .product-form section.bg-white { border-top: 1px solid var(--hr-line); border-radius: 0; padding-inline: 0; }
+
+  // Sizes and colors as tidy chips
+  .s-product-options-thumbnails-wrapper label,
+  .s-product-options-colors-wrapper label { border-radius: var(--hr-radius); }
+}
+
+.hr-product-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem 1.5rem;
+  padding: .75rem 0 1rem;
+}
+.hr-tool-link {
+  display: inline-flex;
+  align-items: center;
+  gap: .45rem;
+  font-size: .85rem;
+  font-weight: 600;
+  color: var(--hr-ink);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  i { font-size: 1.05rem; }
+  &:hover { opacity: .7; }
+}
+
+.hr-size-guide {
+  font-size: .9rem;
+  &__intro { color: var(--hr-ink-soft); margin-bottom: 1rem; line-height: 1.8; }
+  &__table-wrap { overflow-x: auto; }
+  &__table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    th { background: var(--hr-sand); font-weight: 600; padding: .7rem; }
+    td { padding: .65rem; border-bottom: 1px solid var(--hr-line); font-variant-numeric: tabular-nums; }
+  }
+  &__tip { margin-top: 1rem; font-size: .82rem; color: var(--hr-stone); line-height: 1.7; }
+}
+
+.hr-assurance { margin-top: 1.25rem; border-top: 1px solid var(--hr-line); }
+.hr-accordion {
+  border-bottom: 1px solid var(--hr-line);
+  summary {
+    display: flex;
+    align-items: center;
+    gap: .6rem;
+    padding: 1rem 0;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: .92rem;
+    list-style: none;
+    &::-webkit-details-marker { display: none; }
+    &::after { content: "+"; margin-inline-start: auto; font-size: 1.2rem; font-weight: 400; transition: transform .3s var(--hr-ease); }
+  }
+  &[open] summary::after { transform: rotate(45deg); }
+  p { padding-bottom: 1rem; font-size: .88rem; line-height: 1.8; color: var(--hr-ink-soft); }
+}
