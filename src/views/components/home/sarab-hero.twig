@@ -1,0 +1,59 @@
+{#
+  Sarab — Polarized Lens Hero
+| Variable              | Type    | Description                                   |
+|-----------------------|---------|-----------------------------------------------|
+| component.video_url   | ?string | MP4 link (muted loop). Falls back to theme demo |
+| component.poster      | ?string | Poster / fallback image                       |
+| component.eyebrow     | ?string | Small label above headline                    |
+| component.title       | ?string | Headline                                      |
+| component.subtitle    | ?string | Supporting line                               |
+| component.cta_text    | ?string | Primary button text                           |
+| component.cta_url     | ?string | Primary button link                           |
+| component.cta2_text   | ?string | Secondary button text                         |
+| component.cta2_url    | ?string | Secondary button link                         |
+| component.lens        | ?bool   | Enable the cursor lens effect                 |
+#}
+{% set video = component.video_url ?: ('images/sarab/hero.mp4'|asset) %}
+{% set poster = component.poster ?: ('images/sarab/hero-poster.jpg'|asset) %}
+{% set title = component.title ?: (theme.is_rtl ? 'استقطِب الوهج.' : 'Polarize the glare.') %}
+{% set lens = component.lens ?? true %}
+
+<section component-id="{{ componentId }}" class="sx-hero sx-dark" data-sx-hero {{ lens ? 'data-lens' : '' }} aria-label="{{ title|e('html_attr') }}">
+  <div class="sx-hero__media" aria-hidden="true">
+    <img class="sx-hero__poster" src="{{ poster }}" alt="" fetchpriority="high" decoding="async">
+    <video class="sx-hero__video" muted loop playsinline preload="metadata" poster="{{ poster }}" data-src="{{ video }}"></video>
+  </div>
+
+  {% if lens %}
+  <div class="sx-hero__glare" aria-hidden="true"></div>
+  <div class="sx-hero__lens" aria-hidden="true"><span class="sx-hero__lens-glint"></span><span class="sx-hero__lens-label">{{ theme.is_rtl ? 'مستقطَب' : 'Polarized' }}</span></div>
+  {% endif %}
+  <div class="sx-hero__shade" aria-hidden="true"></div>
+
+  <div class="sx-hero__content container">
+    {% if component.eyebrow %}
+      <p class="sx-eyebrow sx-hero__eyebrow" data-sx-fade>{{ component.eyebrow }}</p>
+    {% endif %}
+    <h1 class="sx-display sx-hero__title" data-sx-split>{{ title }}</h1>
+    <div class="sx-hero__bottom">
+      {% if component.subtitle %}
+        <p class="sx-hero__sub" data-sx-fade>{{ component.subtitle }}</p>
+      {% endif %}
+      <div class="sx-hero__ctas" data-sx-fade>
+        {% if component.cta_text %}
+          <a href="{{ component.cta_url ?: store.url }}" class="sx-btn sx-btn--light" data-sx-magnet>
+            <span>{{ component.cta_text }}</span><i class="sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }}" aria-hidden="true"></i>
+          </a>
+        {% endif %}
+        {% if component.cta2_text %}
+          <a href="{{ component.cta2_url ?: store.url }}" class="sx-btn sx-btn--ghost">{{ component.cta2_text }}</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <div class="sx-hero__meta container" aria-hidden="true">
+    <span class="sx-hero__scroll"><i></i>{{ theme.is_rtl ? 'مرّر' : 'Scroll' }}</span>
+    <span class="sx-hero__uv">UV400 · {{ store.name }}</span>
+  </div>
+</section>

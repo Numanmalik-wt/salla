@@ -1,0 +1,29 @@
+{#
+  Sarab — Scrubbed Statement with inline image pills
+| component.label      | ?string  | Small label                                   |
+| component.text       | ?string  | Statement. Use [1] [2] [3] to place image pills |
+| component.pills      | object[] | collection: image                             |
+#}
+{% set text = component.text ?: (theme.is_rtl
+  ? 'صُمّمت [1] لشمسٍ لا تعرف المجاملة، وقبّعاتٌ [2] تحفظ ملامحك، وتفاصيل [3] تُكمل الحكاية.'
+  : 'Lenses [1] made for an unforgiving sun, caps [2] that keep your edge, details [3] that finish the story.') %}
+{% set pills = component.pills ?? [] %}
+
+<section component-id="{{ componentId }}" class="sx-statement sx-dark" data-sx-statement>
+  <div class="container">
+    {% if component.label %}<p class="sx-eyebrow" data-sx-fade>{{ component.label }}</p>{% endif %}
+    <p class="sx-statement__text sx-display">
+      {% for word in text|split(' ') %}
+        {% if word starts with '[' and word|length <= 4 %}
+          {% set i = word|replace({'[':'', ']':''}) %}
+          {% set pill = pills[i - 1] ?? null %}
+          {% if pill and pill.image %}
+            <span class="sx-pill" aria-hidden="true"><img src="{{ pill.image }}" alt="" loading="lazy" decoding="async"></span>
+          {% endif %}
+        {% else %}
+          <span class="sx-word">{{ word }}</span>
+        {% endif %}
+      {% endfor %}
+    </p>
+  </div>
+</section>

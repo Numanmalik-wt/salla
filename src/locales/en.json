@@ -5,30 +5,6 @@
     },
     "appBanner": {
       "download_now": "download now"
-    },
-    "hareer": {
-      "go_to_slide": "Go to slide",
-      "announcements": "Store announcements",
-      "shop_now": "Shop now",
-      "view_all": "View all",
-      "shop_the_look": "Shop the look",
-      "days": "Days",
-      "hours": "Hours",
-      "minutes": "Mins",
-      "seconds": "Secs",
-      "close": "Close",
-      "search": "Search",
-      "wishlist": "Wishlist",
-      "size_guide": "Length guide",
-      "custom_tailoring": "Request custom tailoring",
-      "tailoring_message": "Hello, I would like this item tailored to my size:",
-      "size_guide_intro": "Choose your abaya length by your height. Abaya length is measured in inches from the top of the shoulder to the hem.",
-      "abaya_length": "Abaya length (in)",
-      "your_height": "Your height",
-      "cm": "cm",
-      "size_guide_tip": "Tip: if you are between two lengths and wear heels, choose the longer one.",
-      "delivery": "Delivery",
-      "returns": "Exchanges & returns"
     }
   },
   "pages": {

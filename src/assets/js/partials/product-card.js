@@ -67,19 +67,6 @@ class ProductCard extends HTMLElement {
     return '';
   }
 
-  /**
-   * Hareer: second product photo revealed on hover (desktop only, via CSS).
-   */
-  getHoverImage() {
-    if (this.fullImage || this.minimal || this.horizontal) return '';
-    const images = Array.isArray(this.product?.images) ? this.product.images : [];
-    const mainUrl = this.product?.image?.url;
-    const second = images.map(img => img?.url || img).find(url => url && url !== mainUrl);
-    if (!second) return '';
-    this.classList.add('hr-has-hover-image');
-    return `<img class="hr-card-hover-image" src="${this.escapeHTML(second)}" alt="" aria-hidden="true" loading="lazy" />`;
-  }
-
   getPriceFormat(price) {
     if (!price || price == 0) {
       return salla.config.get('store.settings.product.show_price_as_dash')?'-':'';
@@ -206,7 +193,6 @@ class ProductCard extends HTMLElement {
               alt="${this.escapeHTML(this.product?.image?.alt || this.product.name)}"
               loading="lazy"
             />
-            ${this.getHoverImage()}
             ${!this.fullImage && !this.minimal ? this.getProductBadge() : ''}
           </a>
           ${this.fullImage ? `<a href="${this.product?.url}" aria-label=${this.product.name} class="s-product-card-overlay"></a>`:''}

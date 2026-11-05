@@ -1,0 +1,30 @@
+{#
+  Sarab — Editorial index with cursor-following image
+| component.title               | ?string  |                        |
+| component.items               | object[] | collection             |
+| component.items[].title       | string   |                        |
+| component.items[].caption     | ?string  |                        |
+| component.items[].image       | string   |                        |
+| component.items[].url         | ?string  |                        |
+#}
+<section component-id="{{ componentId }}" class="sx-index" data-sx-index>
+  <div class="container">
+    <div class="sx-index__head">
+      <p class="sx-eyebrow">{{ component.title ?: (theme.is_rtl ? 'تسوّق حسب الفئة' : 'Shop by category') }}</p>
+    </div>
+    <ul class="sx-index__list">
+      {% for item in component.items %}
+        <li>
+          <a href="{{ item.url ?: '#' }}" class="sx-index__row" data-sx-index-row data-img="{{ item.image }}">
+            <span class="sx-index__num" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>
+            <span class="sx-index__name sx-display">{{ item.title }}</span>
+            {% if item.caption %}<span class="sx-index__cap">{{ item.caption }}</span>{% endif %}
+            <img class="sx-index__thumb" src="{{ item.image }}" alt="" loading="lazy" decoding="async">
+            <i class="sx-index__arrow sicon-arrow-{{ theme.is_rtl ? 'left' : 'right' }}" aria-hidden="true"></i>
+          </a>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+  <div class="sx-index__float" aria-hidden="true"><img alt=""></div>
+</section>

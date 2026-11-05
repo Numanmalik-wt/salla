@@ -1,0 +1,26 @@
+{#
+  Sarab — Scroll-expanding video window
+| component.video_url  | ?string |  MP4 link                     |
+| component.poster     | ?string |  Poster image                 |
+| component.title      | ?string |                               |
+| component.text       | ?string |                               |
+| component.cta_text   | ?string |                               |
+| component.cta_url    | ?string |                               |
+#}
+{% set video = component.video_url ?: ('images/sarab/story.mp4'|asset) %}
+{% set poster = component.poster ?: ('images/sarab/story-poster.jpg'|asset) %}
+<section component-id="{{ componentId }}" class="sx-reveal sx-dark" data-sx-reveal>
+  <div class="sx-reveal__stage">
+    <div class="sx-reveal__window" data-sx-window>
+      <img src="{{ poster }}" alt="" loading="lazy" decoding="async">
+      <video muted loop playsinline preload="none" poster="{{ poster }}" data-src="{{ video }}"></video>
+    </div>
+    <div class="sx-reveal__copy container">
+      <h2 class="sx-display" data-sx-split>{{ component.title ?: (theme.is_rtl ? 'وُلدت في الصحراء' : 'Born in the dunes') }}</h2>
+      {% if component.text %}<p data-sx-fade>{{ component.text }}</p>{% endif %}
+      {% if component.cta_text %}
+        <a href="{{ component.cta_url ?: '#' }}" class="sx-btn sx-btn--light" data-sx-fade data-sx-magnet><span>{{ component.cta_text }}</span></a>
+      {% endif %}
+    </div>
+  </div>
+</section>

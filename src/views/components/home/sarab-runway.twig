@@ -1,0 +1,58 @@
+{#
+  Sarab — Pinned horizontal product runway
+| component.title         | ?string   | Section title                          |
+| component.subtitle      | ?string   | Supporting text                        |
+| component.products      | Product[] | Selected products                      |
+| component.display_all_url | ?string | "View all" link                        |
+#}
+{% set products = component.products ?? [] %}
+<section component-id="{{ componentId }}" class="sx-runway" data-sx-runway>
+  <div class="sx-runway__pin">
+    <header class="sx-runway__head container">
+      <div>
+        <p class="sx-eyebrow">{{ theme.is_rtl ? 'المجموعة' : 'The Collection' }} — <span data-sx-count>01</span> / {{ '%02d'|format(products|length) }}</p>
+        <h2 class="sx-display sx-runway__title" data-sx-split>{{ component.title ?: (theme.is_rtl ? 'منصّة العرض' : 'The Runway') }}</h2>
+      </div>
+      <div class="sx-runway__aside">
+        {% if component.subtitle %}<p>{{ component.subtitle }}</p>{% endif %}
+        {% if component.display_all_url and component.display_all_url != '#' %}
+          <a class="sx-link" href="{{ component.display_all_url }}">{{ trans('blocks.home.display_all') }}</a>
+        {% endif %}
+      </div>
+    </header>
+
+    <div class="sx-runway__viewport">
+      <ol class="sx-runway__track" data-sx-track>
+        {% for product in products %}
+          <li class="sx-card" data-sx-card>
+            <a href="{{ product.url }}" class="sx-card__media" aria-label="{{ product.name|e('html_attr') }}">
+              <img src="{{ product.image.url }}" alt="{{ product.image.alt ?: product.name }}" loading="lazy" decoding="async">
+              <span class="sx-card__index" aria-hidden="true">{{ '%02d'|format(loop.index) }}</span>
+              {% if product.promotion_title %}<span class="sx-card__badge">{{ product.promotion_title }}</span>{% endif %}
+            </a>
+            <div class="sx-card__body">
+              <div>
+                <h3 class="sx-card__name"><a href="{{ product.url }}">{{ product.name }}</a></h3>
+                {% if product.subtitle %}<p class="sx-card__sub">{{ product.subtitle }}</p>{% endif %}
+              </div>
+              <p class="sx-card__price">
+                {% if product.is_on_sale %}
+                  <span>{{ product.sale_price|money }}</span> <s>{{ product.regular_price|money }}</s>
+                {% else %}
+                  <span>{{ product.price|money }}</span>
+                {% endif %}
+              </p>
+            </div>
+            <salla-add-product-button class="sx-card__add" product-id="{{ product.id }}" product-status="{{ product.status }}" product-type="{{ product.type }}" width="wide">
+              {{ product.add_to_cart_label ?: trans('pages.cart.add_to_cart') }}
+            </salla-add-product-button>
+          </li>
+        {% endfor %}
+        <li class="sx-card sx-card--end" aria-hidden="true">
+          <span class="sx-display">{{ theme.is_rtl ? 'والمزيد قادم' : 'More, soon.' }}</span>
+        </li>
+      </ol>
+    </div>
+    <div class="sx-runway__progress container" aria-hidden="true"><i data-sx-progress></i></div>
+  </div>
+</section>

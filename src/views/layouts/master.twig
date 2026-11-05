@@ -71,6 +71,13 @@
         window.header_is_sticky = "{{theme.settings.get('header_is_sticky', 'Default Value')}}"
         window.imageZoom = "{{theme.settings.get('imageZoom')}}"
         window.can_access_wallet = {{ user.can_access_wallet | json_encode }}
+        window.sarab = {
+            smooth: {{ theme.settings.get('sarab_smooth_scroll', true) ? 'true' : 'false' }},
+            cursor: {{ theme.settings.get('sarab_cursor', true) ? 'true' : 'false' }},
+            preloader: {{ (theme.settings.get('sarab_preloader', true) and page.slug == 'index') ? 'true' : 'false' }},
+            rtl: {{ theme.is_rtl ? 'true' : 'false' }}
+        };
+        document.documentElement.classList.add('sx-js');
         window.enable_more_menu = "{{ theme.settings.get('enable_more_menu', true) }}"
         window.enable_add_product_toast = "{{ theme.settings.get('enable_add_product_toast', true) }}"
         window.notify_when_available_in_card = "{{ theme.settings.get('notify_when_available_in_card', true) }}"
@@ -79,23 +86,10 @@
     {% hook 'head:start' %}
     {% hook head %}
     {% block styles %}{% endblock %}
-    {# Hareer: optional display font for headings #}
-    {% set hareer_fonts = {
-        'el-messiri': {'family': 'El+Messiri:wght@500;600;700', 'css': "'El Messiri', var(--font-main), serif"},
-        'amiri': {'family': 'Amiri:wght@400;700', 'css': "'Amiri', var(--font-main), serif"},
-        'noto-naskh': {'family': 'Noto+Naskh+Arabic:wght@500;600;700', 'css': "'Noto Naskh Arabic', var(--font-main), serif"},
-        'playfair': {'family': 'Playfair+Display:wght@500;600;700', 'css': "'Playfair Display', var(--font-main), serif"}
-    } %}
-    {% set hareer_font_key = theme.settings.get('hareer_heading_font', 'el-messiri') %}
-    {% set hareer_font_key = hareer_font_key is iterable ? ((hareer_font_key|first).value ?? 'el-messiri') : hareer_font_key %}
-    {% set hareer_font = hareer_fonts[hareer_font_key] ?? null %}
-    {% set hareer_font_family = hareer_font ? hareer_font.css : null %}
-    {% if hareer_font %}
-        <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family={{ hareer_font.family }}&display=swap">
-    {% endif %}
     <link rel="stylesheet" href="{{ 'app.css' | asset }}">
+    {% set sx_font = theme.settings.get('sarab_display_font', 'reem') %}
+    <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Reem+Kufi:wght@400..700&family=El+Messiri:wght@400..700&display=swap">
     <link rel="stylesheet" href="{{ theme.font.path|cdn }}"/>
     <link rel="stylesheet" href="{{ 'fonts/sallaicons.css'|cdn }}"/>
     
@@ -107,17 +101,15 @@
             --color-primary-light: {{ theme.color.lighter(0.15) }};
             --color-primary-reverse: {{ theme.color.reverse_text }};
             /* Theme specific variables */
-            --s-radius: {{ theme.settings.get('hareer_sharp_corners', true) ? '0px' : '.75rem' }};
-            {% if hareer_font_family %}--font-heading: {{ hareer_font_family|raw }};{% endif %}
+            --s-radius: .75rem;
+            --sx-display-ar: {{ sx_font == 'messiri' ? "'El Messiri'" : (sx_font == 'store' ? 'var(--font-main)' : "'Reem Kufi'") }};
         }
     </style>
     {# tracking services, custom css feature. #}
     {% hook 'head:end' %}
 </head>
-{% set hareer_ratio = theme.settings.get('hareer_card_ratio', 'portrait') %}
-{% set hareer_ratio = hareer_ratio is iterable ? ((hareer_ratio|first).value ?? 'portrait') : hareer_ratio %}
-<body id="app" class="theme-raed theme-hareer hr-ratio-{{ hareer_ratio }} {{ theme.settings.get('hareer_card_hover_image', true) ? 'hr-card-hover' : '' }} overflow-x-hidden {% hook 'body:classes' %}
-  {{ theme.settings.get('footer_is_dark', true) ? ' footer-is-dark' : ' footer-is-light' }}
+<body id="app" class="theme-raed theme-sarab overflow-x-hidden{{ page.slug == 'index' ? ' sx-home' : '' }}{{ theme.settings.get('sarab_grain', true) ? ' sx-grain' : '' }} {% hook 'body:classes' %}
+  {{ theme.settings.get('footer_is_dark') ? ' footer-is-dark' : ' footer-is-light' }}
   {{ theme.settings.get('topnav_is_dark') ? ' topnav-is-dark' : '' }}
   {{ theme.settings.get('sticky_add_to_cart') ? ' is-sticky-product-bar' : '' }}
   ">
@@ -126,6 +118,14 @@
     <a href="https://www.enable-javascript.com/" rel="noreferrer"
        target="_blank">To enable JavaScript on webpage</a>.
 </noscript>
+{% if theme.settings.get('sarab_preloader', true) and page.slug == 'index' %}
+<div class="sx-preloader" aria-hidden="true">
+  <div class="sx-preloader__iris"></div>
+  <span class="sx-preloader__name">{{ store.name }}</span>
+</div>
+{% endif %}
+<div class="sx-cursor" aria-hidden="true"><span></span></div>
+<a href="#main-content" class="sx-skip">{{ theme.is_rtl ? 'تخطَّ إلى المحتوى' : 'Skip to content' }}</a>
 <div class="app-inner flex flex-col min-h-full">
     {% hook 'body:start' %}
     {% component 'header.header' %}
@@ -139,6 +139,7 @@
     <salla-add-product-toast data-testid="store-add-product-toast"></salla-add-product-toast>
 {% endif %}
 <script defer crossorigin="anonymous" src="{{ 'app.js' | asset }}"></script>
+<script defer src="{{ 'sarab.js' | asset }}"></script>
 
 {# Twilight Components #}
 <salla-offer-modal data-testid="store-offer-modal"></salla-offer-modal>

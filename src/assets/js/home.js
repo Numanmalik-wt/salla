@@ -1,15 +1,11 @@
 import "lite-youtube-embed";
 import BasePage from "./base-page";
-import { initHeroSliders, initTabs, initCountdowns } from "./hareer/home-sections";
 import Lightbox from "fslightbox";
 window.fslightbox = Lightbox;
 
 class Home extends BasePage {
     onReady() {
         this.initFeaturedTabs();
-        initHeroSliders();
-        initTabs();
-        initCountdowns();
     }
 
     /**

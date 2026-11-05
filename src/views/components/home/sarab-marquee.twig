@@ -1,0 +1,19 @@
+{#
+  Sarab — Velocity marquee
+| component.items  | ?string | One phrase per line |
+| component.style  | ?string | dark / accent       |
+#}
+{% set raw = component.items ?: (theme.is_rtl
+  ? "حماية UV400\nشحن سريع لكل المدن\nتغليف هدايا فاخر\nإرجاع خلال ١٤ يوماً"
+  : "UV400 protection\nFast nationwide shipping\nLuxury gift wrapping\n14-day returns") %}
+{% set items = raw|split("\n") %}
+<section component-id="{{ componentId }}" class="sx-marquee sx-marquee--{{ component.style ?: 'accent' }}" data-sx-marquee>
+  <h2 class="sr-only">{{ items|join(' · ') }}</h2>
+  {% for row in 1..2 %}
+    <div class="sx-marquee__row" aria-hidden="true" data-dir="{{ row == 1 ? 1 : -1 }}">
+      <div class="sx-marquee__inner">
+        {% for n in 1..3 %}{% for item in items %}<span>{{ item|trim }}</span><i>✦</i>{% endfor %}{% endfor %}
+      </div>
+    </div>
+  {% endfor %}
+</section>
